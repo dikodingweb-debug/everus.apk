@@ -8,6 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Susun folder www
+        run: |
+          mkdir -p www
+          cp index.html login.html dashboard.html style.css responsive.css config.js api.js auth.js chart.js dashboard.js passkey-client.js app-notifications.js qris.png www/
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
       - uses: actions/setup-java@v4
