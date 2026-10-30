@@ -1,8 +1,0 @@
-{
-  "appId": "com.everus.tabungan",
-  "appName": "Tabungan Digital",
-  "webDir": "www",
-  "plugins": {
-    "LocalNotifications": { "iconColor": "#2563EB" }
-  }
-}
