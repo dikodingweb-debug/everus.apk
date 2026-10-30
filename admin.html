@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#072f26">
+<title>Admin — EverUs</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="responsive.css">
+<style>
+:root{--admin-green:#0b5945;--admin-line:#e2ebe6}
+body{background:#f4f7f5}.admin-shell{min-height:100vh;display:grid;grid-template-columns:250px minmax(0,1fr)}
+.admin-sidebar{background:#082f26;color:#fff;padding:26px 16px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:24px}
+.admin-brand{padding:0 12px}.admin-brand strong{display:block;font-size:20px;letter-spacing:.04em}.admin-brand small{color:#b7d2c7}
+.admin-nav{display:grid;gap:7px}.admin-nav button{border:0;background:transparent;color:#d8e9e1;text-align:left;padding:12px;border-radius:11px;font:inherit;cursor:pointer;display:flex;gap:12px;align-items:center}.admin-nav button:hover,.admin-nav button.active{background:#174b3d;color:white}.admin-nav button.active{box-shadow:inset 3px 0 #8dd6b5}
+.admin-side-bottom{margin-top:auto;display:grid;gap:10px;padding:0 8px}.admin-side-bottom a{color:#d8e9e1}
+.admin-main{min-width:0;padding:30px clamp(16px,3vw,42px) 60px;max-width:1500px;width:100%;margin:0 auto}
+.admin-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:24px}.admin-head h1{margin:4px 0}.admin-view{display:none}.admin-view.active{display:block}
+.admin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px}.admin-box{background:white;border:1px solid var(--admin-line);border-radius:18px;padding:22px;margin-bottom:18px;box-shadow:0 5px 18px #173d2a08}.admin-box h2{margin-top:0}.admin-box label{display:block;margin:12px 0;font-size:14px}.admin-box input,.admin-box select,.admin-box textarea{display:block;width:100%;margin-top:6px;padding:11px;border:1px solid #d7e3dc;border-radius:10px;font:inherit}.admin-box input[type=checkbox]{display:inline;width:auto}.admin-box input[type=range]{padding:0}.admin-box textarea{min-height:90px}
+.admin-table{width:100%;border-collapse:collapse;font-size:13px}.admin-table td,.admin-table th{text-align:left;padding:9px;border-bottom:1px solid var(--admin-line);overflow-wrap:anywhere}.admin-scroll{overflow:auto}.muted-note{font-size:12px;color:#667a72}
+.crop-preview{display:block;width:min(100%,360px);aspect-ratio:1;object-fit:contain;border:1px dashed #9aafa4;border-radius:12px;background:#f4f8f6;touch-action:none;cursor:grab}.crop-preview:active{cursor:grabbing}.crop-workspace{width:min(100%,360px)}
+.proof-toolbar{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin:14px 0}.proof-toolbar label{min-width:190px;flex:1}.proof-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:14px}.proof-card{border:1px solid var(--admin-line);border-radius:14px;padding:14px;background:#fff;display:grid;gap:10px}.proof-thumb{width:100%;aspect-ratio:4/3;object-fit:cover;background:#edf3ef;border-radius:10px;cursor:pointer}.proof-meta{font-size:12px;color:#667a72;display:grid;gap:4px;overflow-wrap:anywhere}.proof-actions{display:flex;gap:8px}.proof-actions button{flex:1}.proof-modal{position:fixed;inset:0;background:#071b15dd;z-index:99;display:none;align-items:center;justify-content:center;padding:20px}.proof-modal.open{display:flex}.proof-modal-inner{background:#fff;border-radius:16px;padding:14px;max-width:min(900px,96vw);max-height:94vh;display:grid;gap:10px}.proof-modal img{max-width:85vw;max-height:76vh;object-fit:contain}.proof-modal-head{display:flex;justify-content:space-between;gap:12px;align-items:center}
+@media(max-width:760px){.admin-shell{display:block}.admin-sidebar{position:sticky;z-index:20;top:0;height:auto;padding:12px;gap:10px}.admin-brand{padding:0 6px}.admin-nav{display:flex;overflow-x:auto;gap:5px}.admin-nav button{white-space:nowrap;padding:10px;font-size:13px}.admin-side-bottom{display:flex;margin:0;padding:0 6px}.admin-side-bottom a{display:none}.admin-main{padding:18px 12px 40px}.admin-box{padding:16px}}
+</style>  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="EverUs">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+</head>
+<body>
+<div class="admin-shell">
+<aside class="admin-sidebar">
+  <div class="admin-brand"><strong>EVERUS</strong><small>ADMIN CONTROL CENTER</small></div>
+  <nav class="admin-nav" aria-label="Navigasi admin">
+    <button class="active" data-view-target="overview">▦ <span>Ringkasan</span></button>
+    <button data-view-target="accounts">♙ <span>Akun pengguna</span></button>
+    <button data-view-target="barcode">▧ <span>Pengaturan barcode</span></button>
+    <button data-view-target="notifications">♧ <span>Notifikasi</span></button>
+    <button data-view-target="proofs">▣ <span>Bukti foto</span></button>
+  </nav>
+  <div class="admin-side-bottom"><a href="dashboard.html">Halaman user</a><button id="logout" class="btn btn-ghost">Keluar</button></div>
+</aside>
+<main class="admin-main">
+<header class="admin-head"><div><p class="eyebrow">EVERUS · ADMINISTRATOR</p><h1 id="pageTitle">Ringkasan</h1><p class="muted">Kelola sistem EverUs melalui menu navigasi.</p></div><p id="status" class="muted" role="status">Memuat data admin…</p></header>
+<div id="error" class="form-error" hidden></div>
+<section class="admin-view active" data-view="overview">
+ <div class="admin-grid">
+  <div class="admin-box"><p class="muted-note">JUMLAH PENGGUNA</p><h2 id="userCount">—</h2></div>
+  <div class="admin-box"><p class="muted-note">BUKTI FOTO TERSIMPAN</p><h2 id="proofCount">—</h2></div>
+  <div class="admin-box"><p class="muted-note">STATUS BARCODE</p><h2 id="barcodeStatus">—</h2></div>
+ </div>
+ <section class="admin-box"><h2>Akun dan saldo</h2><div id="usersTable" class="admin-scroll"></div></section>
+</section>
+<section class="admin-view" data-view="accounts">
+ <section class="admin-box"><h2>Kelola akun pengguna</h2><form id="userForm">
+ <label>Akun<select id="userId"><option value="A001">User A</option><option value="B001">User B</option><option value="ADMIN001">Admin</option></select></label>
+ <label>Username baru<input id="username" minlength="3" maxlength="30" placeholder="Kosongkan jika tidak diubah"></label>
+ <label>Password baru<input id="password" type="password" minlength="8" placeholder="Kosongkan jika tidak diubah"></label>
+ <button class="btn btn-primary" type="submit">Simpan akun</button></form><p class="muted-note">Gunakan password kuat. Perubahan admin tidak meminta password lama karena akses panel sudah diverifikasi server.</p></section>
+</section>
+<section class="admin-view" data-view="barcode">
+ <section class="admin-box"><h2>Kontrol barcode QRIS</h2>
+ <label><input id="barcodeEnabled" type="checkbox"> Akses barcode setiap hari</label>
+ <p class="muted-note">Jika dicentang, barcode dapat dibuka setiap hari. Jika tidak dicentang, tombol Menabung tetap aktif dan pop-up pemberitahuan tetap muncul, tetapi barcode serta konfirmasi pembayaran hanya tersedia setiap hari Rabu.</p>
+ <div class="muted-note">Barcode yang sedang digunakan pengguna:</div><img id="currentBarcodePreview" alt="Barcode aktif saat ini" hidden style="max-width:220px;width:100%;aspect-ratio:1;object-fit:contain;border:1px solid #d7e3dc;border-radius:12px;margin:10px 0">
+ <label>Upload barcode baru (crop persegi 1:1)<input id="barcodeFile" type="file" accept="image/png,image/jpeg,image/webp"></label>
+ <div class="crop-workspace"><canvas id="cropCanvas" class="crop-preview" width="600" height="600" aria-label="Pratinjau crop barcode"></canvas></div>
+ <label>Perbesar / perkecil crop<input id="cropZoom" type="range" min="1" max="3" step="0.01" value="1"></label>
+ <p class="muted-note">Geser gambar pada kotak pratinjau untuk memilih bagian barcode yang akan dipotong.</p>
+ <button id="saveBarcode" class="btn btn-primary" type="button">Simpan pengaturan barcode</button></section>
+</section>
+<section class="admin-view" data-view="notifications">
+ <div class="admin-grid">
+  <div class="admin-box"><h2>Kirim notifikasi sekarang</h2><form id="sendForm"><label>Penerima<select id="sendTarget"><option value="ALL">Semua pengguna</option><option value="A001">User A</option><option value="B001">User B</option></select></label><label>Judul<input id="sendTitle" required maxlength="100"></label><label>Pesan<textarea id="sendMessage" required maxlength="1000"></textarea></label><button class="btn btn-primary">Kirim notifikasi</button></form></div>
+  <div class="admin-box"><h2>Jadwalkan notifikasi</h2><form id="scheduleForm"><label>Penerima<select id="scheduleTarget"><option value="ALL">Semua pengguna</option><option value="A001">User A</option><option value="B001">User B</option></select></label><label>Judul<input id="scheduleTitle" required maxlength="100"></label><label>Pesan<textarea id="scheduleMessage" required maxlength="1000"></textarea></label><label>Tanggal dan waktu<input id="runAt" type="datetime-local" required></label><label>Pengulangan<select id="repeat"><option value="NONE">Sekali saja</option><option value="DAILY">Setiap hari</option><option value="WEEKLY">Setiap minggu</option></select></label><button class="btn btn-primary">Simpan jadwal</button><p class="muted-note">Jadwal membutuhkan trigger Apps Script processScheduledNotifications setiap 5 menit.</p></form></div>
+ </div>
+ <section class="admin-box"><h2>Daftar jadwal</h2><div id="schedulesTable" class="admin-scroll"></div></section>
+</section>
+<section class="admin-view" data-view="proofs">
+ <section class="admin-box"><h2>Bukti foto wajah</h2><p class="muted-note">Foto merupakan data pribadi sensitif. Batasi akses, gunakan hanya sesuai tujuan, dan hapus setelah tidak diperlukan.</p>
+ <div class="proof-toolbar"><label>Filter bulan dan tahun<select id="proofMonth"><option value="all">Semua bulan</option></select></label><label>Cari ID pengguna / transaksi<input id="proofSearch" type="search" placeholder="Contoh: A001 atau TRX-..."></label></div>
+ <p id="proofSummary" class="muted-note"></p><div id="proofsTable" class="proof-grid"></div></section>
+</section>
+</main></div>
+<div class="proof-modal" id="proofModal" role="dialog" aria-modal="true" aria-label="Pratinjau bukti foto"><div class="proof-modal-inner"><div class="proof-modal-head"><strong id="proofModalTitle">Pratinjau foto</strong><button class="btn btn-ghost" id="closeProofModal" type="button">Tutup</button></div><img id="proofModalImage" alt="Bukti foto wajah"><a id="proofOpenDrive" class="btn btn-primary" target="_blank" rel="noopener">Buka di Google Drive</a></div></div>
+<script src="config.js"></script><script src="api.js"></script><script src="admin.js"></script>
+<script src="./pwa.js"></script>
+</body></html>
